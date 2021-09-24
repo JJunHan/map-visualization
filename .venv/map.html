@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #control {
+        margin: auto;
+        width: 60%;
+        border: 5px solid #645163;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+        }
+        #user_input{
+        margin: auto;
+        width: 60%;
+        border: 5px solid #645163;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+        }
+
+    </style>
+    
+    <head>
+        <title>Food bank!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+
+         <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+
+    
+    </head>
+
+    <body>
+        <h1>FOOD BANK</h1>
+        <script> 
+        window.onload = function(){
+            //var name = prompt("What's your name?");
+            //var lengthOfName = name.length;
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            document.getElementById('mapdiv').style.display = 'none';
+            document.getElementById('control').style.display = 'none';
+            //document.getElementById('mapdiv').style.width = width;
+        };
+        </script>
+
+        <div id='mapdiv' style='height:700px; width: 90%; margin: auto;'></div>
+
+        <div id='control'>
+            <input type="button" value="Remove all labels" id = "removeall" onclick="removeAll()">
+            <input type="button" value="Show all labels" id = "showall" onclick="showAll()">
+            <input type="button" value="Show 5km Radius" id = "showall" onclick="show5kmradius()">
+            <input type="button" value="Show 10km Radius" id = "showall" onclick="show10kmradius()">
+        </div>
+        
+        <br>
+        <br>
+        <div id='user_input' >
+
+            <form>
+                <label for="user_age">How old are you?</label>
+                <select id="user_age" name="user_age">
+                    <option></option>
+                    <option value="0">0-9</option>
+                    <option value="1">10-19</option>
+                    <option value="2">20-29</option>
+                    <option value="3">30-39</option>
+                </select>
+
+                <br>
+                <br>
+                <label for="yesno">Do you have a food bank card? </label>
+                <label class="container" id = "yesno">Yes
+                <input type="radio" name="radio" value = "Yes">
+                <span class="checkmark"></span>
+                </label>
+                <label class="container">No
+                <input type="radio" name="radio" checked="checked" value = "No">
+                <span class="checkmark"></span>
+                </label>
+                <br>
+                <br>
+            </form>
+
+            <input type="button" value="Submit" onclick="verifyinputs()">
+
+            <p id="details_age"></p> 
+            <p id="details_card"></p> 
+
+        </div>
+    </body>
+
+    <script src="myscript.js"></script>
+    </html>
+
+        
