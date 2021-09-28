@@ -101,5 +101,5 @@ print(focus_df)
 recs = focus_df.to_dict(orient="index")
 # print(type(recs))
 
-with open('.venv/final_info.txt', 'w') as file:
+with open('.venv/dataFiles/final_info.txt', 'w') as file:
      file.write(json.dumps(recs)) # use `json.loads` to do the reverse
