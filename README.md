@@ -23,7 +23,7 @@ file_df = pd.read_excel(".venv/dataFiles/dataBase.xlsx", header= None)
 file_df.columns = [""] # Replace with the column names
 ```
 
-3) The script will extract the postal codes under the column **'Postal code'** dump the info into a text file.
+3) The script will extract the postal codes under the column **'Postal code'** and dump the info into a text file.
 
 4) It will then take the data from that text file and pass it through the OneMap API service to obtain Lat/Long/X/Y information and store them accordingly.
 
@@ -35,4 +35,3 @@ file_df.columns = [""] # Replace with the column names
 ## Sample
 
 ![demo](.venv/samplemap.png)
-![filters](.venv/filters.png)
