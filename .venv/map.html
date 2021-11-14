@@ -1,28 +1,68 @@
 <!DOCTYPE html>
 <html>
     <style>
+        html,body{
+            height: 100%;
+            font-family:verdana;
+        }
         #control {
-        margin: auto;
-        width: 60%;
-        border: 5px solid #645163;
-        padding: 10px;
-        text-align: center;
-        vertical-align: middle;
+        /* margin: auto; */
+        /* width: 60%; */
+            border: 5px solid #645163;
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
         }
-        #user_input{
-        margin: auto;
-        width: 60%;
-        border: 5px solid #645163;
-        padding: 10px;
-        text-align: center;
-        vertical-align: middle;
+        #userInput{
+            margin: auto;
+            width: 60%;
+            border: 5px solid #645163;
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
         }
+        #sideBar{
+            float: left;
+            width: 300px;
+            height: 700px;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid #9aca49;
+            min-height: 700px;
+            text-align: left;
+        }
+        #searchBar{
+            /* padding: 5px; */
+            /* padding-right: 75px; */
+            /* border-radius: 5px; */
+            /* margin: 3px; */
+            height: 20px;
+            width: 100%;
+            
+        }
+        /* #sideBarBottom{
+            position: relative; 
+            bottom: 0px; 
+            width: 100%;
+            padding-bottom: 10px;
+        } */
+
+        .searchResults{
+            display: none;
+            text-align: left;
+        }
+        .searchDetails{
+            display: none;
+            text-align: left;
+        }
+
 
     </style>
     
     <head>
         <title>Food bank!</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>
         
@@ -35,57 +75,110 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 
-
-    
     </head>
 
     <body>
-        <h1>FOOD BANK</h1>
+        <p style='text-align: center; font-size: 28px; margin-bottom: 6px;'><b>HEADER NAME</b></p>
+        <div style='padding-bottom: 20px;'>
+        <div style='background-color:#9aca49; width: 30%; margin: auto; height: 10px;'></div>
+        </div>
         <script> 
         window.onload = function(){
             //var name = prompt("What's your name?");
             //var lengthOfName = name.length;
             var width = window.innerWidth;
             var height = window.innerHeight;
+
+            // Hide map and control panel
+            document.getElementById('sideBar').style.display = 'none';
             document.getElementById('mapdiv').style.display = 'none';
-            document.getElementById('control').style.display = 'none';
-            //document.getElementById('mapdiv').style.width = width;
         };
         </script>
 
-        <div id='mapdiv' style='height:700px; width: 90%; margin: auto;'></div>
+        <div id='sideBar'>
+            <div style="background-color:#9aca49; padding: 15px 10px 10px 10px;">
+                <p style = 'font-size: 15px; margin: 0;'><b>Search Location</b></p>
+            </div>
+            <div style="padding-top: 10px; width: 90%; margin: 0px 10px 0px 15px;">
+            <div style="padding: 5px 10px 10px 0px;">
+            <input id="searchBar" onkeyup="searchDBNames()" type="text" name="search" placeholder="Enter a location...">
+            <input style="margin-left: -46px; border: 0; font-weight : bold; background-color: #9aca49; height: 20px;" type="button" value="GO!" id = "searchText" onclick="convertWithAPI()">
+            </div>
+            
+            <select id="distanceFilter" name="distanceFilter" style="float: left;">                
+                <option value="0" >Whole SG</option>
+                <option value="2">2 km Radius</option>
+                <option value="5" selected="selected">5 km Radius</option>
+                <option value="10">10 km Radius</option>
+            </select>
 
-        <div id='control'>
+            <input style="float: right; background-color: #9aca49; border:0px;" type="button" value="Get my location!" id = "userLoc" onclick="getLocation()">
+            </div>
+
+            <br>
+            <div style='padding-left: 10px;'>
+            
+            <p style = 'font-size: 15px;'><b>Filters</b></p>
+            <div style='padding-left: 20px;'>
+            <label for="typeFilter">FILTER 1</label>
+            <input type="checkbox" id="typeFilter" name="typeFilter" value="FILTER 1"><br>
+            <label for="typeFilter">FILTER 2</label>
+            <input type="checkbox" id="typeFilter" name="typeFilter" value="FILTER 2"><br>
+            <label for="typeFilter">FILTER 3</label>
+            <input type="checkbox" id="typeFilter" name="typeFilter" value="FILTER 3"><br>
+            <label for="typeFilter">FILTER 4</label>
+            <input type="checkbox" id="typeFilter" name="typeFilter" value="FILTER 4"><br>
+            </div>
+            <p style="font-size: 13px"><i>*Disclaimer</i></p>
+            </div>
+            
+            <div style='padding-bottom: 10px;'>
+                <div style='background-color:#9aca49; width: 100%;height: 10px;'></div>
+            </div>
+
+
+            <ol id = "orderedList">
+                <!-- <li class="searchResults">Cat</li> -->
+            </ol>
+
+            <ol id = "detailsList">
+            </ol>
+
+
+            <br>
+
+            <!-- <div id = sideBarBottom>
+            <p id="details_age"></p> 
+            <p id="details_card"></p> 
             <input type="button" value="Remove all labels" id = "removeall" onclick="removeAll()">
             <input type="button" value="Show all labels" id = "showall" onclick="showAll()">
-            <input type="button" value="Show 5km Radius" id = "showall" onclick="show5kmradius()">
-            <input type="button" value="Show 10km Radius" id = "showall" onclick="show10kmradius()">
+            </div> -->
+            
         </div>
-        
-        <br>
-        <br>
-        <div id='user_input' >
 
+        <div id='mapdiv' style='height:700px; position:relative;'></div>
+
+        <br>
+        <br>
+
+        <div id='userInput' >
             <form>
                 <label for="user_age">How old are you?</label>
                 <select id="user_age" name="user_age">
-                    <option></option>
-                    <option value="0">0-9</option>
+                    
+                    <option value="0" selected="selected">0-9</option>
                     <option value="1">10-19</option>
                     <option value="2">20-29</option>
                     <option value="3">30-39</option>
                 </select>
-
                 <br>
                 <br>
-                <label for="yesno">Do you have a food bank card? </label>
+                <label for="yesno">Do you have a card? </label>
                 <label class="container" id = "yesno">Yes
                 <input type="radio" name="radio" value = "Yes">
-                <span class="checkmark"></span>
                 </label>
                 <label class="container">No
                 <input type="radio" name="radio" checked="checked" value = "No">
-                <span class="checkmark"></span>
                 </label>
                 <br>
                 <br>
@@ -93,10 +186,8 @@
 
             <input type="button" value="Submit" onclick="verifyinputs()">
 
-            <p id="details_age"></p> 
-            <p id="details_card"></p> 
-
         </div>
+        
     </body>
 
     <script src="myscript.js"></script>
